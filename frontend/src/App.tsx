@@ -5,18 +5,18 @@ import Visualisations from "./components/Visualisations";
 function App() {
   return (
     <main
-      className="min-h-screen items-center justify-center gap-2 dark:bg-gray-800 flex flex-col"
+      className="min-h-screen bg-gray-100 flex flex-col px-4 pt-4"
       id="page"
     >
-      <div id="row1" className="flex flex-row">
-        <div>
+      <div id="row1" className="flex flex-row h-1/2">
+        <div className="w-1/2">
           <FilterTable />
         </div>
-        <div>
+        <div className="">
           <SContainer />
         </div>
       </div>
-      <div id="row2" className="flex flex-row">
+      <div id="row2" className="grow-1">
         <Visualisations />
       </div>
     </main>
