@@ -26,7 +26,6 @@ const SContainer = ({
         }))}
         layout={{
           width: 870,
-
           // can be used to hide grid
           //   xaxis: { visible: false, showgrid: true, title: "" },
           //   yaxis: { visible: false, showgrid: true },

@@ -1,5 +1,6 @@
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import BarChart from "./BarCharts";
+import BubbleChart from "./BubbleChart";
 
 const Visualisations = () => {
   const visual1 = useFullScreenHandle();
@@ -40,10 +41,13 @@ const Visualisations = () => {
         xLabel: ["A", "B", "C"],
         title: "Resource Type Distribution",
       })}
-      {renderHelper(visual4, BarChart, {
-        yValues: [1, 2, 3],
-        xLabel: ["A", "B", "C"],
-        title: "Place Standardized",
+      {renderHelper(visual4, BubbleChart, {
+        // Map geolocation to Code from https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
+        locations: ["FRA", "DEU", "RUS", "ESP"],
+        // int(Frequency/10) Or some other binning strategy
+        size: [20, 30, 15, 10],
+        // int(Frequency/10)
+        color: [10, 20, 40, 50],
       })}
     </div>
   );
