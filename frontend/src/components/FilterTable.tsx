@@ -6,31 +6,44 @@ const FilterTable = () => {
     {
       "swiss-id": 1,
       title: "Test Title Test Title Test Title Test Title",
-      language: "French",
-      "resource-type": "journal",
+      language: ["French", "English"],
+      subject: ["Article"],
+      library: "Bern",
+      type: "article",
+      "resource-type": ["journal"],
       "issue-date": "12-10-20204",
     },
     {
       "swiss-id": 2,
       title: "Test Title 2",
-      language: "English",
-      "resource-type": "journal",
+      language: ["English"],
+      subject: ["Article"],
+      library: "Bern",
+      type: "article",
+      "resource-type": ["journal"],
       "issue-date": "12-10-20204",
     },
     {
       "swiss-id": 3,
       title: "Test Title 3",
-      language: "French",
-      "resource-type": "journal",
+      language: ["French"],
+      subject: ["Article"],
+      library: "Bern",
+      type: "article",
+      "resource-type": ["journal"],
       "issue-date": "12-10-20204",
     },
   ];
+
+  const [displayData, setDisplayData] = React.useState(testData);
   const [showSelected, setShowSelected] = React.useState(false);
+
+  // Constants from filtered Data
   const languageList: String[] = ["French", "English", "Spanish"];
-  const typeList: String[] = ["French", "English", "Spanish"];
-  const subjectList: String[] = ["French", "English", "Spanish"];
-  const libraryList: String[] = ["French", "English", "Spanish"];
-  const resourceList: String[] = ["French", "English", "Spanish"];
+  const typeList: String[] = ["article", "News", "Journal"];
+  const subjectList: String[] = ["Article", "Test", "Journal"];
+  const libraryList: String[] = ["Bern", "Zurich", "Berlin"];
+  const resourceList: String[] = ["journal", "News", "Resource"];
 
   const [selectedLanguages, setSelectedLanguages] =
     React.useState(languageList);
@@ -39,6 +52,41 @@ const FilterTable = () => {
   const [selectedTypes, setSelectedTypes] = React.useState(typeList);
   const [selectedResources, setSelectedResources] =
     React.useState(resourceList);
+
+  const applyFilter = () => {
+    const filteredData = testData.filter((e) => {
+      const isLanguage = e.language.some((item) =>
+        selectedLanguages.includes(item)
+      );
+      const isSubject = e.subject.some((item) =>
+        selectedSubjects.includes(item)
+      );
+      const isResource = e["resource-type"].some((item) =>
+        selectedResources.includes(item)
+      );
+
+      const isLibrary = selectedLibraries.includes(e.library);
+      const isType = selectedTypes.includes(e.type);
+
+      return isLanguage && isSubject && isResource && isLibrary && isType;
+    });
+    setDisplayData(filteredData);
+  };
+
+  React.useEffect(() => {
+    applyFilter();
+  }, [
+    selectedLanguages,
+    selectedSubjects,
+    selectedLibraries,
+    selectedTypes,
+    selectedResources,
+  ]);
+
+  const handleSearch = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    console.log("Search Called - Implement Function");
+  };
 
   const dropDownHandler = (
     label: String,
@@ -60,7 +108,7 @@ const FilterTable = () => {
                     setSelectedArray(
                       selectedArray.filter((a) => a !== element)
                     );
-                  else selectedArray.push(element);
+                  else setSelectedArray([...selectedArray, element]);
                 }}
               />
               &nbsp; {element}
@@ -82,7 +130,7 @@ const FilterTable = () => {
         />
       </div>
       <div className="flex flex-row justify-between pb-2">
-        <form className="flex items-center">
+        <form className="flex items-center" onSubmit={handleSearch}>
           <input
             type="text"
             id="simple-search"
@@ -130,7 +178,7 @@ const FilterTable = () => {
             <Table.HeadCell>{""}</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {testData.map((element) => {
+            {displayData.map((element) => {
               return (
                 <Table.Row
                   className="bg-white dark:border-gray-700 dark:bg-gray-800"

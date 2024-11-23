@@ -1,5 +1,5 @@
-import { ReactElement } from "react";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import BarChart from "./BarCharts";
 
 const Visualisations = () => {
   const visual1 = useFullScreenHandle();
@@ -7,29 +7,44 @@ const Visualisations = () => {
   const visual3 = useFullScreenHandle();
   const visual4 = useFullScreenHandle();
 
-  const SampleComp = () => <img src="/Sample.svg" height={1200} width={1200} />;
-
   // @ts-ignore
-  const renderHelper = (visual, Comp) => (
-    <FullScreen
-      handle={visual}
-      className={`${
-        !visual.active
-          ? "w-3/12"
-          : "w-full flex flex-row items-center justify-center bg-white"
-      } px-8`}
-    >
-      <div onClick={() => (visual.active ? visual.exit() : visual.enter())}>
-        <Comp />
-      </div>
-    </FullScreen>
+  const renderHelper = (visual, Comp, props) => (
+    <div onClick={() => (visual.active ? visual.exit() : visual.enter())}>
+      <Comp {...props} />
+    </div>
+    // <FullScreen
+    //   handle={visual}
+    //   className={`${
+    //     !visual.active
+    //       ? "w-3/12"
+    //       : "w-full flex flex-row items-center justify-center bg-white"
+    //   } px-8`}
+    // >
+
+    // </FullScreen>
   );
   return (
     <div className="flex flex-row justify-between items-center py-8">
-      {renderHelper(visual1, SampleComp)}
-      {renderHelper(visual2, SampleComp)}
-      {renderHelper(visual3, SampleComp)}
-      {renderHelper(visual4, SampleComp)}
+      {renderHelper(visual1, BarChart, {
+        yValues: [1, 2, 3],
+        xLabel: ["A", "B", "C"],
+        title: "Subject Form Distribution",
+      })}
+      {renderHelper(visual2, BarChart, {
+        yValues: [1, 2, 3],
+        xLabel: ["A", "B", "C"],
+        title: "Language Distribution",
+      })}
+      {renderHelper(visual3, BarChart, {
+        yValues: [1, 2, 3],
+        xLabel: ["A", "B", "C"],
+        title: "Resource Type Distribution",
+      })}
+      {renderHelper(visual4, BarChart, {
+        yValues: [1, 2, 3],
+        xLabel: ["A", "B", "C"],
+        title: "Place Standardized",
+      })}
     </div>
   );
 };
