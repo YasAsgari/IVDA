@@ -186,6 +186,7 @@ const FilterTable = () => {
                 >
                   <Table.Cell className="p-4">
                     <Checkbox
+                      checked={true}
                       onClick={(e) => {
                         console.log(e);
                       }}
