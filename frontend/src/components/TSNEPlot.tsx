@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import BookRecord from "../models/BookRecord";
 import { BooksContext } from "../utils/BooksContext";
-import { Dropdown } from "flowbite-react";
 
 const TSNEPlot = () => {
   const ctx = useContext(BooksContext);
@@ -41,8 +40,8 @@ const TSNEPlot = () => {
         text: unfilterdeGroup.map((item) =>
           [
             `Language: ${item.languages}`,
-            `TSNE_X_Value: ${item.tsne_coordinates.x}`,
-            `TSNE_Y_Value: ${item.tsne_coordinates.y}`,
+            `UMAP_X_Value: ${item.tsne_coordinates.x}`,
+            `UMAP_Y_Value: ${item.tsne_coordinates.y}`,
             `Resource Type: ${item.resource_types}`,
             `Subject Form: ${item.subject_forms}`,
           ].join("<br>")
@@ -60,8 +59,8 @@ const TSNEPlot = () => {
         text: filteredGroup.map((item) =>
           [
             `Language: ${item.languages}`,
-            `TSNE_X_Value: ${item.tsne_coordinates.x}`,
-            `TSNE_Y_Value: ${item.tsne_coordinates.y}`,
+            `UMAP_X_Value: ${item.tsne_coordinates.x}`,
+            `UMAP_Y_Value: ${item.tsne_coordinates.y}`,
             `Resource Type: ${item.resource_types}`,
             `Subject Form: ${item.subject_forms}`,
           ].join("<br>")
