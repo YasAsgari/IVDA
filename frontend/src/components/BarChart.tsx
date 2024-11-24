@@ -1,8 +1,18 @@
 import Plot from "react-plotly.js";
 
-type Props = { xLabel: string[]; yValues: number[]; className?: string };
+type Props = {
+  xLabel: string[];
+  yValues: number[];
+  categoryOrder: string;
+  className?: string;
+};
 
-export default function BarChart({ xLabel, yValues, className = "" }: Props) {
+export default function BarChart({
+  xLabel,
+  yValues,
+  className = "",
+  categoryOrder = "category ascending",
+}: Props) {
   return (
     <Plot
       className={`size-full h-[calc(100%-2rem)] ${className}`}
@@ -21,7 +31,8 @@ export default function BarChart({ xLabel, yValues, className = "" }: Props) {
         yaxis: {
           range: [0, null],
         },
-        margin: { t: 5, b: 50, l: 0, r: 0, pad: 1 },
+        margin: { t: 5, b: 50, l: 0, r: 80, pad: 1 },
+        xaxis: { categoryorder: categoryOrder },
       }}
     />
   );
