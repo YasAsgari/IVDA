@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import BookRecord from "../models/BookRecord";
 import { BooksContext } from "../utils/BooksContext";
+import { Dropdown } from "flowbite-react";
 
 const TSNEPlot = () => {
   const ctx = useContext(BooksContext);
@@ -37,8 +38,17 @@ const TSNEPlot = () => {
         x: unfilterdeGroup.map((item) => item.tsne_coordinates.x),
         y: unfilterdeGroup.map((item) => item.tsne_coordinates.y),
         // type: "scatter",
+        text: unfilterdeGroup.map((item) =>
+          [
+            `Language: ${item.languages}`,
+            `TSNE_X_Value: ${item.tsne_coordinates.x}`,
+            `TSNE_Y_Value: ${item.tsne_coordinates.y}`,
+            `Resource Type: ${item.resource_types}`,
+            `Subject Form: ${item.subject_forms}`,
+          ].join("<br>")
+        ),
         mode: "markers",
-        opacity: 0.5,
+        opacity: 0.3,
         marker: {
           size: 10,
           color: customColor(i),
@@ -47,6 +57,15 @@ const TSNEPlot = () => {
       newPlotData.push({
         x: filteredGroup.map((item) => item.tsne_coordinates.x),
         y: filteredGroup.map((item) => item.tsne_coordinates.y),
+        text: filteredGroup.map((item) =>
+          [
+            `Language: ${item.languages}`,
+            `TSNE_X_Value: ${item.tsne_coordinates.x}`,
+            `TSNE_Y_Value: ${item.tsne_coordinates.y}`,
+            `Resource Type: ${item.resource_types}`,
+            `Subject Form: ${item.subject_forms}`,
+          ].join("<br>")
+        ),
         // type: "scatter",
         mode: "markers",
         opacity: 1,
@@ -65,7 +84,22 @@ const TSNEPlot = () => {
 
   return (
     <>
-      <h2 className="pb-2 text-xl font-semibold">TSNE Distribution</h2>
+      <div className="flex flex-row justify-between">
+        <h2 className="pb-2 text-xl font-semibold">TSNE Distribution</h2>
+        <Dropdown
+          color={"black"}
+          label={"Coloring Based On"}
+          dismissOnClick={false}
+        >
+          {["Clustering", "Language", "Resource Type", "Subject Form"].map(
+            (element) => {
+              return (
+                <Dropdown.Item key={element}>&nbsp; {element}</Dropdown.Item>
+              );
+            }
+          )}
+        </Dropdown>
+      </div>
       <div
         id="tsne"
         className="h-[calc(100%-2rem)] overflow-hidden rounded-lg border border-gray-300"

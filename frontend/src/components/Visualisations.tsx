@@ -3,6 +3,7 @@ import Plot from "react-plotly.js";
 import { BooksContext } from "../utils/BooksContext";
 import BarChart from "./BarChart";
 import Container from "./Container";
+import { Dropdown } from "flowbite-react";
 
 const Visualisations = () => {
   const ctx = useContext(BooksContext);
@@ -63,19 +64,49 @@ const Visualisations = () => {
   return (
     <>
       <Container>
-        <h2 className="pb-2 text-xl font-semibold">
-          Subject Form Distribution
-        </h2>
+        <div className="flex flex-row justify-between">
+          <h2 className="pb-2 text-xl font-semibold">
+            Subject Form Distribution
+          </h2>
+          <Dropdown color={"black"} label={"Sort:"} dismissOnClick={false}>
+            {["Ascending", "Descending", "Alphabetical"].map((element) => {
+              return (
+                <Dropdown.Item key={element}>&nbsp; {element}</Dropdown.Item>
+              );
+            })}
+          </Dropdown>
+        </div>
+        Entropy Value = 0.2
         <BarChart yValues={subjectFormDist} xLabel={subjectList} />
       </Container>
       <Container>
-        <h2 className="pb-2 text-xl font-semibold">Language Distribution</h2>
+        <div className="flex flex-row justify-between">
+          <h2 className="pb-2 text-xl font-semibold">Language Distribution</h2>
+          <Dropdown color={"black"} label={"Sort:"} dismissOnClick={false}>
+            {["Ascending", "Descending", "Alphabetical"].map((element) => {
+              return (
+                <Dropdown.Item key={element}>&nbsp; {element}</Dropdown.Item>
+              );
+            })}
+          </Dropdown>
+        </div>
+        Entropy Value = 0.1
         <BarChart yValues={languageDist} xLabel={languageList} />
       </Container>
       <Container>
-        <h2 className="pb-2 text-xl font-semibold">
-          Resource Type Distribution
-        </h2>
+        <div className="flex flex-row justify-between">
+          <h2 className="pb-2 text-xl font-semibold">
+            Resource Type Distribution
+          </h2>
+          <Dropdown color={"black"} label={"Sort:"} dismissOnClick={false}>
+            {["Ascending", "Descending", "Alphabetical"].map((element) => {
+              return (
+                <Dropdown.Item key={element}>&nbsp; {element}</Dropdown.Item>
+              );
+            })}
+          </Dropdown>
+        </div>
+        Entropy Value = 0.3
         <BarChart yValues={resourceTypeDist} xLabel={resourceList} />
       </Container>
       <Container>

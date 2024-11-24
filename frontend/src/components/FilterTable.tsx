@@ -5,9 +5,16 @@ import {
   Dropdown,
   Table,
   TextInput,
+  Modal,
   ToggleSwitch,
 } from "flowbite-react";
-import React, { Dispatch, SetStateAction, useContext, useEffect } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import BookRecord from "../models/BookRecord";
 import { BooksContext } from "../utils/BooksContext";
 
@@ -42,6 +49,8 @@ const FilterTable = () => {
   const [selectedLibraries, setSelectedLibraries] = React.useState(libraryList);
   const [selectedResources, setSelectedResources] =
     React.useState(resourceList);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalIndex, setModalIndex] = useState(0);
 
   // Initial setup
   // useLayoutEffect(() => {
@@ -113,12 +122,54 @@ const FilterTable = () => {
                     );
                   else setSelectedArray([...selectedArray, element]);
                 }}
-              />{" "}
+              />
               &nbsp; {element}
             </Dropdown.Item>
           );
         })}
       </Dropdown>
+    );
+  };
+
+  const ShowModal = () => {
+    return (
+      <>
+        <Modal show={openModal} onClose={() => setOpenModal(false)}>
+          <Modal.Header>Document Details</Modal.Header>
+          <Modal.Body>
+            {!!ctx.allData.length ? (
+              <div>
+                {Object.keys(ctx.allData[modalIndex]).map((e) => {
+                  return (
+                    <div>
+                      <span>{e}: &emsp; </span>
+                      {typeof ctx.allData[modalIndex][e] != "object" ? (
+                        <span>{ctx.allData[modalIndex][e]}</span>
+                      ) : (
+                        <>
+                          {Object.keys(ctx.allData[modalIndex][e]).map((k) => {
+                            return (
+                              <div>
+                                <span>
+                                  &emsp; &emsp; &emsp;
+                                  {k}: &emsp;
+                                </span>
+                                <span>{ctx.allData[modalIndex][e][k]}</span>
+                              </div>
+                            );
+                          })}
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <></>
+            )}
+          </Modal.Body>
+        </Modal>
+      </>
     );
   };
 
@@ -138,14 +189,6 @@ const FilterTable = () => {
           placeholder="Search Title..."
           className="w-96"
         />
-        {/* <form className="" onSubmit={handleSearch}> */}
-        {/* <input
-						type="text"
-						id="simple-search"
-						className="block w-full max-w-[25rem] rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-						placeholder="Search Title..."
-					/> */}
-        {/* </form> */}
         {dropDownHandler(
           "Languages",
           languageList,
@@ -215,7 +258,17 @@ const FilterTable = () => {
                   <Table.Cell className="px-0">{element.swiss_id}</Table.Cell>
                   <Table.Cell>{element.title}</Table.Cell>
                   <Table.Cell className="px-0">
-                    {element.languages.join(",\n")}
+                    {element.languages.map((r, i) => (
+                      <Badge
+                        className="w-fit m-1"
+                        color="green"
+                        size="xs"
+                        key={i}
+                      >
+                        {r}
+                      </Badge>
+                    ))}
+                    {/* {element.languages.join(",\n")} */}
                   </Table.Cell>
                   <Table.Cell className="flex flex-row flex-wrap gap-2 p-1">
                     {element.resource_types.map((r, i) => (
@@ -226,8 +279,15 @@ const FilterTable = () => {
                   </Table.Cell>
                   <Table.Cell>{element.publication.year}</Table.Cell>
                   <Table.Cell>
-                    <Button color="blue" className="size-8 rounded-lg p-0">
-                      i{/* <img src="/Button.svg" /> */}
+                    <Button
+                      color="blue"
+                      className="size-8 rounded-lg p-0"
+                      onClick={() => {
+                        setOpenModal(true);
+                        setModalIndex(element.id);
+                      }}
+                    >
+                      i
                     </Button>
                   </Table.Cell>
                 </Table.Row>
@@ -235,6 +295,7 @@ const FilterTable = () => {
             })}
           </Table.Body>
         </Table>
+        {ShowModal()}
       </div>
     </>
   );
