@@ -84,22 +84,7 @@ const TSNEPlot = () => {
 
   return (
     <>
-      <div className="flex flex-row justify-between">
-        <h2 className="pb-2 text-xl font-semibold">TSNE Distribution</h2>
-        <Dropdown
-          color={"black"}
-          label={"Coloring Based On"}
-          dismissOnClick={false}
-        >
-          {["Clustering", "Language", "Resource Type", "Subject Form"].map(
-            (element) => {
-              return (
-                <Dropdown.Item key={element}>&nbsp; {element}</Dropdown.Item>
-              );
-            }
-          )}
-        </Dropdown>
-      </div>
+      <h2 className="pb-2 text-xl font-semibold">UMAP Distribution</h2>
       <div
         id="tsne"
         className="h-[calc(100%-2rem)] overflow-hidden rounded-lg border border-gray-300"

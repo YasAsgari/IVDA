@@ -28,6 +28,9 @@ const Visualisations = () => {
   const [languageDist, setLanguageDist] = useState<number[]>([]);
   const [resourceTypeDist, setResourceTypeDist] = useState<number[]>([]);
   const [toggle, setToggle] = useState(true);
+  const [sortingSubject, setSortingSubject] = useState("Alphabetical");
+  const [sortingLanguage, setSortingLanguage] = useState("Alphabetical");
+  const [sortingResource, setSortingResource] = useState("Alphabetical");
   // const [placeStandardDist, setPlaceStandardDist] = useState<number[]>([]);
 
   useEffect(() => {
@@ -61,6 +64,12 @@ const Visualisations = () => {
     // );
   }, [ctx.plotData]);
 
+  const getCategoryOrder = (type: string) => {
+    if (type === "Descending") return "total descending";
+    else if (type === "Ascending") return "total ascending";
+    else return "category ascending";
+  };
+
   return (
     <>
       <Container>
@@ -69,29 +78,45 @@ const Visualisations = () => {
             Subject Form Distribution
           </h2>
           <Dropdown color={"black"} label={"Sort:"} dismissOnClick={false}>
-            {["Ascending", "Descending", "Alphabetical"].map((element) => {
+            {["Alphabetical", "Ascending", "Descending"].map((element) => {
               return (
-                <Dropdown.Item key={element}>&nbsp; {element}</Dropdown.Item>
+                <Dropdown.Item
+                  key={element}
+                  onClick={() => setSortingSubject(element)}
+                >
+                  &nbsp; {element}
+                </Dropdown.Item>
               );
             })}
           </Dropdown>
         </div>
-        Entropy Value = 0.2
-        <BarChart yValues={subjectFormDist} xLabel={subjectList} />
+        <BarChart
+          yValues={subjectFormDist}
+          xLabel={subjectList}
+          categoryOrder={getCategoryOrder(sortingSubject)}
+        />
       </Container>
       <Container>
         <div className="flex flex-row justify-between">
           <h2 className="pb-2 text-xl font-semibold">Language Distribution</h2>
           <Dropdown color={"black"} label={"Sort:"} dismissOnClick={false}>
-            {["Ascending", "Descending", "Alphabetical"].map((element) => {
+            {["Alphabetical", "Ascending", "Descending"].map((element) => {
               return (
-                <Dropdown.Item key={element}>&nbsp; {element}</Dropdown.Item>
+                <Dropdown.Item
+                  key={element}
+                  onClick={() => setSortingLanguage(element)}
+                >
+                  &nbsp; {element}
+                </Dropdown.Item>
               );
             })}
           </Dropdown>
         </div>
-        Entropy Value = 0.1
-        <BarChart yValues={languageDist} xLabel={languageList} />
+        <BarChart
+          yValues={languageDist}
+          xLabel={languageList}
+          categoryOrder={getCategoryOrder(sortingLanguage)}
+        />
       </Container>
       <Container>
         <div className="flex flex-row justify-between">
@@ -99,15 +124,23 @@ const Visualisations = () => {
             Resource Type Distribution
           </h2>
           <Dropdown color={"black"} label={"Sort:"} dismissOnClick={false}>
-            {["Ascending", "Descending", "Alphabetical"].map((element) => {
+            {["Alphabetical", "Ascending", "Descending"].map((element) => {
               return (
-                <Dropdown.Item key={element}>&nbsp; {element}</Dropdown.Item>
+                <Dropdown.Item
+                  key={element}
+                  onClick={() => setSortingResource(element)}
+                >
+                  &nbsp; {element}
+                </Dropdown.Item>
               );
             })}
           </Dropdown>
         </div>
-        Entropy Value = 0.3
-        <BarChart yValues={resourceTypeDist} xLabel={resourceList} />
+        <BarChart
+          yValues={resourceTypeDist}
+          xLabel={resourceList}
+          categoryOrder={getCategoryOrder(sortingResource)}
+        />
       </Container>
       <Container>
         <h2 className="pb-2 text-xl font-semibold">Place Standardized</h2>
