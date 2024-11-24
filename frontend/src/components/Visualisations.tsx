@@ -14,7 +14,7 @@ const Visualisations = () => {
     "Briefsammlung",
     "Briefsammlun",
   ];
-  const languageList: string[] = ["Deutsch", "FranzÃ¶sisch", "Italienisch"];
+  const languageList: string[] = ["Deutsch", "Französisch", "Italienisch","Englisch","Other"];
   const resourceList: string[] = [
     "Brief",
     "Autograph",

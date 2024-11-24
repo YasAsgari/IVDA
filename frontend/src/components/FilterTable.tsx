@@ -27,7 +27,7 @@ const FilterTable = () => {
   const [showSelected, setShowSelected] = React.useState(false);
 
   // Constants from filtered Data
-  const languageList: string[] = ["Deutsch", "FranzÃ¶sisch", "Italienisch"];
+  const languageList: string[] = ["Deutsch", "Französisch", "Italienisch","Englisch","Other"];
   const subjectList: string[] = [
     "Autograf",
     "Handschrift",
