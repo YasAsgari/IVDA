@@ -4,87 +4,135 @@ import { useContext, useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import BookRecord from "../models/BookRecord";
 import { BooksContext } from "../utils/BooksContext";
+import { Dropdown } from "flowbite-react";
 
 const TSNEPlot = () => {
-	const ctx = useContext(BooksContext);
+  const ctx = useContext(BooksContext);
 
-	const [plotData, setPlotData] = useState<Data[]>([]);
-	const [groupData, setGroupData] = useState<BookRecord[][]>([]);
-	const numColors = 5;
-	const customColor = (index: number) =>
-		chroma
-			.scale("Spectral")
-			.domain([0, numColors - 1])(index)
-			.hex();
+  const [plotData, setPlotData] = useState<Data[]>([]);
+  const [groupData, setGroupData] = useState<BookRecord[][]>([]);
+  const numColors = 5;
+  const customColor = (index: number) =>
+    chroma
+      .scale("Spectral")
+      .domain([0, numColors - 1])(index)
+      .hex();
 
-	// useEffect(() => {
-	// 	ctx.setPlotData(selectedData);
-	// }, [selectedData]);
+  // useEffect(() => {
+  // 	ctx.setPlotData(selectedData);
+  // }, [selectedData]);
 
-	useEffect(() => {
-		const newPlotData: Data[] = [];
-		const newGroupData: BookRecord[][] = [];
+  useEffect(() => {
+    const newPlotData: Data[] = [];
+    const newGroupData: BookRecord[][] = [];
 
-		for (let i = 0; i < numColors; i++) {
-			const group = ctx.allData.filter(
-				(f) => f.tsne_coordinates.color == i
-			);
-			newPlotData.push({
-				x: group.map((item) => item.tsne_coordinates.x),
-				y: group.map((item) => item.tsne_coordinates.y),
-				type: "scatter",
-				mode: "markers",
-				marker: {
-					size: 10,
-					color: customColor(i),
-				},
-			});
-			newGroupData.push(group);
-		}
+    for (let i = 0; i < numColors; i++) {
+      const unfilterdeGroup = ctx.allData.filter(
+        (f) => f.tsne_coordinates.color == i && !ctx.filteredData.includes(f)
+      );
+      const filteredGroup = ctx.filteredData.filter(
+        (f) => f.tsne_coordinates.color == i
+      );
 
-		setPlotData(newPlotData as Data[]);
-		setGroupData(newGroupData);
-	}, [ctx.allData]);
+      newPlotData.push({
+        x: unfilterdeGroup.map((item) => item.tsne_coordinates.x),
+        y: unfilterdeGroup.map((item) => item.tsne_coordinates.y),
+        // type: "scatter",
+        text: unfilterdeGroup.map((item) =>
+          [
+            `Language: ${item.languages}`,
+            `TSNE_X_Value: ${item.tsne_coordinates.x}`,
+            `TSNE_Y_Value: ${item.tsne_coordinates.y}`,
+            `Resource Type: ${item.resource_types}`,
+            `Subject Form: ${item.subject_forms}`,
+          ].join("<br>")
+        ),
+        mode: "markers",
+        opacity: 0.3,
+        marker: {
+          size: 10,
+          color: customColor(i),
+        },
+      });
+      newPlotData.push({
+        x: filteredGroup.map((item) => item.tsne_coordinates.x),
+        y: filteredGroup.map((item) => item.tsne_coordinates.y),
+        text: filteredGroup.map((item) =>
+          [
+            `Language: ${item.languages}`,
+            `TSNE_X_Value: ${item.tsne_coordinates.x}`,
+            `TSNE_Y_Value: ${item.tsne_coordinates.y}`,
+            `Resource Type: ${item.resource_types}`,
+            `Subject Form: ${item.subject_forms}`,
+          ].join("<br>")
+        ),
+        // type: "scatter",
+        mode: "markers",
+        opacity: 1,
+        marker: {
+          size: 10,
+          color: customColor(i),
+        },
+      });
+      newGroupData.push([...unfilterdeGroup]);
+      newGroupData.push([...filteredGroup]);
+    }
 
-	return (
-		<>
-			<h2 className="pb-2 text-xl font-semibold">TSNE Distribution</h2>
-			<div
-				id="tsne"
-				className="h-[calc(100%-2rem)] overflow-hidden rounded-lg border border-gray-300"
-			>
-				<Plot
-					data={plotData}
-					layout={{
-						xaxis: {
-							visible: false,
-						},
-						yaxis: {
-							visible: false,
-						},
-						showlegend: false,
-						plot_bgcolor: "#e5ecf6",
-						paper_bgcolor: "#e5ecf6",
-					}}
-					onSelected={(e) => {
-						const newSelectedData: BookRecord[] = [];
+    setPlotData(newPlotData as Data[]);
+    setGroupData(newGroupData);
+  }, [ctx.allData, ctx.filteredData]);
 
-						for (const selected of e.points) {
-							newSelectedData.push(
-								groupData[selected.curveNumber][
-									selected.pointIndex
-								]
-							);
-						}
+  return (
+    <>
+      <div className="flex flex-row justify-between">
+        <h2 className="pb-2 text-xl font-semibold">TSNE Distribution</h2>
+        <Dropdown
+          color={"black"}
+          label={"Coloring Based On"}
+          dismissOnClick={false}
+        >
+          {["Clustering", "Language", "Resource Type", "Subject Form"].map(
+            (element) => {
+              return (
+                <Dropdown.Item key={element}>&nbsp; {element}</Dropdown.Item>
+              );
+            }
+          )}
+        </Dropdown>
+      </div>
+      <div
+        id="tsne"
+        className="h-[calc(100%-2rem)] overflow-hidden rounded-lg border border-gray-300"
+      >
+        <Plot
+          data={plotData}
+          layout={{
+            xaxis: {
+              visible: false,
+            },
+            yaxis: {
+              visible: false,
+            },
+            showlegend: false,
+            plot_bgcolor: "#e5ecf6",
+            paper_bgcolor: "#e5ecf6",
+          }}
+          onSelected={(e) => {
+            const newSelectedData: BookRecord[] = [];
 
-						if (newSelectedData.length)
-							ctx.setPlotData(newSelectedData);
-					}}
-					className="size-full"
-				/>
-			</div>
-		</>
-	);
+            for (const selected of e.points) {
+              newSelectedData.push(
+                groupData[selected.curveNumber][selected.pointIndex]
+              );
+            }
+
+            if (newSelectedData.length) ctx.setPlotData(newSelectedData);
+          }}
+          className="size-full"
+        />
+      </div>
+    </>
+  );
 };
 
 export default TSNEPlot;
