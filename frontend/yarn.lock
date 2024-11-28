@@ -1045,6 +1045,13 @@
     "@types/plotly.js" "*"
     "@types/react" "*"
 
+"@types/react-slider@^1.3.6":
+  version "1.3.6"
+  resolved "https://registry.npmjs.org/@types/react-slider/-/react-slider-1.3.6.tgz"
+  integrity sha512-RS8XN5O159YQ6tu3tGZIQz1/9StMLTg/FCIPxwqh2gwVixJnlfIodtVx+fpXVMZHe7A58lAX1Q4XTgAGOQaCQg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^18.2.67":
   version "18.3.12"
   resolved "https://registry.npmjs.org/@types/react/-/react-18.3.12.tgz"
@@ -2430,12 +2437,13 @@ flatten-vertex-data@^1.0.2:
     chroma-js "^3.1.2"
     d3 "^7.9.0"
     flowbite-react "^0.8.0"
-    flowbite-react-template-vite "file:C:/Users/Brighton/AppData/Local/Yarn/Cache/v6/npm-flowbite-react-template-vite-0.0.0-bbd77774-f311-4a95-a817-ebda2981b40c-1732479322225/node_modules/flowbite-react-template-vite"
+    flowbite-react-template-vite "file:C:/Users/ansar/AppData/Local/Yarn/Cache/v6/npm-flowbite-react-template-vite-0.0.0-0cf18b0f-a989-422e-8bd8-73fb3722011a-1732742148632/node_modules/flowbite-react-template-vite"
     plotly.js "^2.35.2"
     react "^18.2.0"
     react-dom "^18.2.0"
     react-full-screen "^1.1.1"
     react-plotly.js "^2.6.0"
+    react-slider "^2.0.6"
 
 flowbite-react@^0.8.0:
   version "0.8.0"
@@ -3765,6 +3773,13 @@ react-refresh@^0.14.2:
   version "0.14.2"
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.14.2.tgz"
   integrity sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==
+
+react-slider@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/react-slider/-/react-slider-2.0.6.tgz"
+  integrity sha512-gJxG1HwmuMTJ+oWIRCmVWvgwotNCbByTwRkFZC6U4MBsHqJBmxwbYRJUmxy4Tke1ef8r9jfXjgkmY/uHOCEvbA==
+  dependencies:
+    prop-types "^15.8.1"
 
 react@^18.2.0:
   version "18.3.1"

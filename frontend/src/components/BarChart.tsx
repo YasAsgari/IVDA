@@ -3,7 +3,7 @@ import Plot from "react-plotly.js";
 type Props = {
   xLabel: string[];
   yValues: number[];
-  categoryOrder: string;
+  categoryOrder: "total descending" | "total ascending" | "category ascending";
   className?: string;
 };
 
@@ -31,7 +31,7 @@ export default function BarChart({
         yaxis: {
           range: [0, null],
         },
-        margin: { t: 5, b: 50, l: 0, r: 80, pad: 1 },
+        margin: { t: 5, b: 60, l: 0, r: 80, pad: 1 },
         xaxis: { categoryorder: categoryOrder },
       }}
     />

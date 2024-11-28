@@ -14,6 +14,7 @@ function App() {
   const [selectedData, setSelectedData] = useState<BookRecord[]>([]);
   const [filteredData, setFilteredData] = useState<BookRecord[]>([]);
   const [plotData, setPlotData] = useState<BookRecord[]>([]);
+  const [range, setRange] = useState<[number, number]>([0, 0]);
 
   useLayoutEffect(() => {
     setAllData([...sample_data]);
@@ -41,15 +42,15 @@ function App() {
       >
         <div className="grid h-1/2 w-full grid-cols-[67rem_auto] grid-rows-1 gap-1">
           <Container>
-            <FilterTable />
+            <FilterTable range={range} />
           </Container>
           <Container>
             <TSNEPlot />
           </Container>
         </div>
         <div className="mt-1 grid grid-cols-4 grid-rows-[180px_calc(50vh-196px)] gap-1">
-          <Container className="col-span-4 h-44">
-            <TimeSeries />
+          <Container className="col-span-4 h-44 !pb-0 !pt-2">
+            <TimeSeries range={range} setRange={setRange} />
           </Container>
           <Visualisations />
         </div>

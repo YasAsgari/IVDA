@@ -7,7 +7,6 @@ import { BooksContext } from "../utils/BooksContext";
 
 const TSNEPlot = () => {
   const ctx = useContext(BooksContext);
-
   const [plotData, setPlotData] = useState<Data[]>([]);
   const [groupData, setGroupData] = useState<BookRecord[][]>([]);
   const numColors = 5;
@@ -16,10 +15,6 @@ const TSNEPlot = () => {
       .scale("Spectral")
       .domain([0, numColors - 1])(index)
       .hex();
-
-  // useEffect(() => {
-  // 	ctx.setPlotData(selectedData);
-  // }, [selectedData]);
 
   useEffect(() => {
     const newPlotData: Data[] = [];
