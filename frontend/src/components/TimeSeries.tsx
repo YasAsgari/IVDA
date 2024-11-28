@@ -12,10 +12,10 @@ const TimeSeries = ({
 }) => {
   const ctx = useContext(BooksContext);
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<{ year: number; count: number }[]>([]);
   const [minDate, setMinDate] = useState(0);
   const [maxDate, setMaxDate] = useState(0);
-  const [hoverIndex, setHoverIndex] = useState(null);
+  const [hoverIndex, setHoverIndex] = useState<number>(-1);
 
   useEffect(() => {
     const tempData = [];
@@ -49,7 +49,7 @@ const TimeSeries = ({
             key={element.year}
             className="flex-1"
             onMouseEnter={() => setHoverIndex(element.year)}
-            onMouseLeave={() => setHoverIndex(null)}
+            onMouseLeave={() => setHoverIndex(-1)}
             style={{
               height: `${Math.ceil(element.count / 15)}px`,
               backgroundColor:

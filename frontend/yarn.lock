@@ -2437,7 +2437,7 @@ flatten-vertex-data@^1.0.2:
     chroma-js "^3.1.2"
     d3 "^7.9.0"
     flowbite-react "^0.8.0"
-    flowbite-react-template-vite "file:C:/Users/ansar/AppData/Local/Yarn/Cache/v6/npm-flowbite-react-template-vite-0.0.0-0cf18b0f-a989-422e-8bd8-73fb3722011a-1732742148632/node_modules/flowbite-react-template-vite"
+    flowbite-react-template-vite "file:C:/Users/ansar/AppData/Local/Yarn/Cache/v6/npm-flowbite-react-template-vite-0.0.0-8ee70c86-c63d-47f0-8be0-9cb82de96562-1732795196658/node_modules/flowbite-react-template-vite"
     plotly.js "^2.35.2"
     react "^18.2.0"
     react-dom "^18.2.0"

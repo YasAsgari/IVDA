@@ -14,7 +14,13 @@ const Visualisations = () => {
     "Briefsammlung",
     "Briefsammlun",
   ];
-  const languageList: string[] = ["Deutsch", "Französisch", "Italienisch","Englisch","Other"];
+  const languageList: string[] = [
+    "Deutsch",
+    "Französisch",
+    "Italienisch",
+    "Englisch",
+    "Other",
+  ];
   const resourceList: string[] = [
     "Brief",
     "Autograph",
@@ -22,18 +28,22 @@ const Visualisations = () => {
     "Buchhandschrift",
     "Archivmaterial / Dossier",
   ];
-  // const libraryList: string[] = ["Basel", "Solothurn"];
+  const [countriesList, setCountriesList] = useState<string[]>([]);
 
   const [subjectFormDist, setSubjectFormDist] = useState<number[]>([]);
   const [languageDist, setLanguageDist] = useState<number[]>([]);
   const [resourceTypeDist, setResourceTypeDist] = useState<number[]>([]);
-  const [toggle, setToggle] = useState(true);
+  const [countryDist, setCountryDist] = useState<number[]>([]);
+
   const [sortingSubject, setSortingSubject] = useState("Alphabetical");
   const [sortingLanguage, setSortingLanguage] = useState("Alphabetical");
   const [sortingResource, setSortingResource] = useState("Alphabetical");
-  // const [placeStandardDist, setPlaceStandardDist] = useState<number[]>([]);
 
   useEffect(() => {
+    const uniqueCountryCodes = [
+      ...new Set(ctx.plotData.map((f) => f.publication.iso)),
+    ];
+
     setSubjectFormDist(
       subjectList.map(
         (subject) =>
@@ -54,14 +64,13 @@ const Visualisations = () => {
       )
     );
 
-    setToggle(!toggle);
-    // setPlaceStandardDist(
-    // 	libraryList.map(
-    // 		(library) =>
-    // 			ctx.plotData.filter((f) => f.publication.city == library)
-    // 				.length
-    // 	)
-    // );
+    setCountriesList(uniqueCountryCodes);
+    setCountryDist(
+      uniqueCountryCodes.map(
+        (countryCode) =>
+          ctx.plotData.filter((f) => f.publication.iso === countryCode).length
+      )
+    );
   }, [ctx.plotData]);
 
   const getCategoryOrder = (type: string) => {
@@ -150,12 +159,10 @@ const Visualisations = () => {
             {
               type: "scattergeo",
               mode: "markers",
-              locations: toggle
-                ? ["FRA", "DEU", "RUS", "ESP", "AUT", "BEL"]
-                : ["FRA", "DEU", "FIN"],
+              locations: countriesList,
               marker: {
-                size: toggle ? [20, 30, 15, 10, 6] : [15, 15, 7],
-                color: toggle ? [10, 20, 40, 50, 11] : [10, 20, 14],
+                size: countryDist.map((e) => Math.ceil(e / 50)),
+                color: countryDist,
                 cmin: 0,
                 cmax: 100,
                 line: {
