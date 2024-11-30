@@ -17,7 +17,7 @@ type BookRecord = {
 		year: number;
 		lat: number;
 		lng: number;
-		// iso: string;
+		iso?: string;
 	};
 	tsne_coordinates: {
 		color: number;
