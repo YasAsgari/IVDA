@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+table td:nth-child(8) > button,
+button[aria-checked="true"] > div {
+	background: #007bff;
+	outline: none;
+	border: none;
+}
+
+div[data-testid="modal-overlay"] {
+	background: #00000070;
+}

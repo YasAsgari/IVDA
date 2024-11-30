@@ -2,7 +2,6 @@ type BookRecord = {
 	id: number;
 	title: string;
 	swiss_id: number;
-	// TODO: What is series??
 	series: string;
 	languages: string[];
 	subject_forms: string[];
@@ -18,7 +17,7 @@ type BookRecord = {
 		year: number;
 		lat: number;
 		lng: number;
-		iso: string;
+		// iso: string;
 	};
 	tsne_coordinates: {
 		color: number;

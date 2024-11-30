@@ -1,89 +1,98 @@
 import { useContext, useEffect, useState } from "react";
-import { BooksContext } from "../utils/BooksContext";
-import { min, max } from "d3";
+import Plot from "react-plotly.js";
 import ReactSlider from "react-slider";
+import { BooksContext } from "../utils/BooksContext";
 
-const TimeSeries = ({
-  range,
-  setRange,
-}: {
-  range: [number, number];
-  setRange: Function;
-}) => {
-  const ctx = useContext(BooksContext);
+const TimeSeries = () => {
+	const ctx = useContext(BooksContext);
+	const bin_size = 5;
 
-  const [data, setData] = useState<{ year: number; count: number }[]>([]);
-  const [minDate, setMinDate] = useState(0);
-  const [maxDate, setMaxDate] = useState(0);
-  const [hoverIndex, setHoverIndex] = useState<number>(-1);
+	const [data, setData] = useState<{ year: number; count: number }[]>([]);
+	const [colors, setColors] = useState<string[]>([]);
 
-  useEffect(() => {
-    const tempData = [];
-    const dates = [
-      ...new Set(ctx.allData.map((element) => element.publication.year)),
-    ];
-    setMinDate(min(dates) || 0);
-    setMaxDate(max(dates) || 0);
+	useEffect(() => {
+		const tempData = [];
 
-    for (let i: number = minDate; i < maxDate; i += 5) {
-      if (!dates.includes(i)) tempData.push({ year: i, count: i });
-      else {
-        tempData.push({
-          year: i,
-          count: ctx.allData.filter(
-            (e) => i <= e.publication.year && e.publication.year < i + 5
-          ).length,
-        });
-      }
-    }
+		for (let i: number = ctx.time.min; i < ctx.time.max; i += bin_size) {
+			tempData.push({
+				year: i,
+				count: ctx.allData.filter(
+					(e) =>
+						i <= e.publication.year &&
+						e.publication.year < i + bin_size
+				).length,
+			});
+		}
 
-    setRange([minDate, maxDate]);
-    setData([...tempData]);
-  }, [ctx.allData]);
+		setData(tempData);
+		setColors(new Array(tempData.length).fill("#007bff"));
+	}, [ctx.allData, ctx.time.min, ctx.time.max]);
 
-  return (
-    <div className="mx-2">
-      <div className="flex mx-2 items-end border-b-2 border-red-400">
-        {data.map((element) => (
-          <div
-            key={element.year}
-            className="flex-1"
-            onMouseEnter={() => setHoverIndex(element.year)}
-            onMouseLeave={() => setHoverIndex(-1)}
-            style={{
-              height: `${Math.ceil(element.count / 15)}px`,
-              backgroundColor:
-                range[0] <= element.year && element.year <= range[1]
-                  ? "#007bff"
-                  : "#ddd",
-            }}
-          >
-            {hoverIndex === element.year && (
-              <div className="relative py-1 -translate-x-1/2 left-2/4 bottom-7 px-2 bg-gray-800 text-white rounded text-xs z-10 whitespace-nowrap">
-                {element.count}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+	useEffect(() => {
+		setColors(
+			data.map((d) =>
+				ctx.time.filter_min <= d.year && d.year < ctx.time.filter_max
+					? "#007bff"
+					: "lightgray"
+			)
+		);
+	}, [ctx.time.filter_min, ctx.time.filter_max]);
 
-      <ReactSlider
-        value={range}
-        onChange={(value) => setRange(value as [number, number])}
-        min={minDate}
-        max={maxDate}
-        step={5}
-        className="h-1 rounded mt-1 bg-gray-200"
-        trackClassName="bg-blue-400"
-        renderThumb={(props, state) => (
-          <div {...props}>
-            <div className="relative h-3 w-3 cursor-grab left-1.5 -top-0.5 rounded-full bg-blue-400"></div>
-            <div className="relative -top-px text-xs">{state.valueNow}</div>
-          </div>
-        )}
-      />
-    </div>
-  );
+	return (
+		<div className="mx-2">
+			<h2 className="text-lg font-semibold">
+				Publication Year Distribution
+			</h2>
+			<Plot
+				className="h-24 w-full bg-white"
+				data={[
+					{
+						x: data.map((d) => d.year),
+						y: data.map((d) => d.count),
+						type: "bar",
+						marker: {
+							color: colors.length > 0 ? colors : "#007bff",
+							line: {
+								color: "white",
+								width: 1,
+							},
+						},
+					},
+				]}
+				layout={{
+					margin: {
+						t: 10,
+						b: 15,
+						l: 25,
+						r: 15,
+					},
+				}}
+				config={{
+					displayModeBar: false, // Hides the mode bar
+				}}
+			/>
+
+			<ReactSlider
+				value={[ctx.time.filter_min, ctx.time.filter_max]}
+				onChange={(value) => {
+					ctx.setFilterTimeMin((value as [number, number])[0]);
+					ctx.setFilterTimeMax((value as [number, number])[1]);
+				}}
+				min={ctx.time.min}
+				max={ctx.time.max}
+				step={bin_size}
+				className="ml-3 mt-1 h-1 rounded bg-gray-200"
+				renderThumb={(props, state) => (
+					<div {...props} key={state.index}>
+						<div className="relative -top-0.5 left-1.5 size-3 cursor-grab rounded-full bg-[#007bff]"></div>
+						<div className="relative -top-px text-xs">
+							{state.valueNow}
+						</div>
+					</div>
+				)}
+			/>
+		</div>
+	);
 };
 
 export default TimeSeries;
