@@ -211,7 +211,7 @@ const FilterTable = () => {
 					setSelectedResources
 				)}
 			</div>
-			<div className="h-[calc(100%-9.5rem)] overflow-x-auto rounded-lg border border-gray-300">
+			<div className="h-[calc(100%-9.5rem)] overflow-x-hidden rounded-lg border border-gray-300">
 				<Table hoverable>
 					<Table.Head>
 						<Table.HeadCell className="p-4"></Table.HeadCell>
