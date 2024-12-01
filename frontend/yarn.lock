@@ -2437,7 +2437,7 @@ flatten-vertex-data@^1.0.2:
     chroma-js "^3.1.2"
     d3 "^7.9.0"
     flowbite-react "^0.8.0"
-    flowbite-react-template-vite "file:C:/Users/ansar/AppData/Local/Yarn/Cache/v6/npm-flowbite-react-template-vite-0.0.0-6edfbe84-0834-42df-b762-53bef0404234-1733007946679/node_modules/flowbite-react-template-vite"
+    flowbite-react-template-vite "file:C:/Users/ansar/AppData/Local/Yarn/Cache/v6/npm-flowbite-react-template-vite-0.0.0-50fd33f8-f68b-4d5b-a649-05bbc3d8d5eb-1733013922668/node_modules/flowbite-react-template-vite"
     plotly.js "^2.35.2"
     react "^18.2.0"
     react-dom "^18.2.0"
@@ -2520,6 +2520,11 @@ function-bind@^1.1.2:
   version "1.1.2"
   resolved "https://registry.npmjs.org/function-bind/-/function-bind-1.1.2.tgz"
   integrity sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==
+
+fuse.js@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-7.0.0.tgz#6573c9fcd4c8268e403b4fc7d7131ffcf99a9eb2"
+  integrity sha512-14F4hBIxqKvD4Zz/XjDc3y94mNZN6pRv3U13Udo0lNLCWRBUsrMv2xwcF/y/Z5sV6+FQW+/ow68cHpm4sunt8Q==
 
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"

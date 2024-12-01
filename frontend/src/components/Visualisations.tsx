@@ -37,9 +37,9 @@ const Visualisations = () => {
   const [countryDist, setCountryDist] = useState<number[]>([]);
 
   useEffect(() => {
-    const uniqueCountryCodes = [
-      ...new Set(ctx.plotData.map((f) => f.publication.iso)),
-    ];
+    const uniqueCountryCodes: string[] = [
+      // ...new Set(ctx.plotData.map((f) => f.publication.iso)),
+    ]; // This is also constant
 
     setSubjectFormDist(
       subjectList.map(

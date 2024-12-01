@@ -19,12 +19,22 @@ import React, {
 import BookRecord from "../models/BookRecord";
 import { BooksContext } from "../utils/BooksContext";
 import Information from "./Information";
+import Fuse from "fuse.js";
 
 const FilterTable = () => {
   const ctx = useContext(BooksContext);
   const pageSize = 250;
 
   const [showSelected, setShowSelected] = React.useState(false);
+  const [displayData, setDisplayData] = React.useState<BookRecord[]>([]);
+
+  React.useEffect(() => {
+    setDisplayData(ctx.filteredData);
+  }, [ctx.filteredData]);
+
+  const fuse = new Fuse(displayData, {
+    keys: ["title", "series"],
+  });
 
   // Constants from filtered Data
   // TODO
@@ -124,10 +134,9 @@ const FilterTable = () => {
     ctx.selectedData,
   ]);
 
-  const handleSearch = (e: { preventDefault: () => void }) => {
+  const handleSearch = (e: any) => {
     e.preventDefault();
-    // TODO
-    console.log("Search Called - Implement Function");
+    setDisplayData(fuse.search(e.target.searchString.value).map((e) => e.item));
   };
 
   const dropDownHandler = (
@@ -172,11 +181,14 @@ const FilterTable = () => {
         />
       </div>
       <div className="flex flex-row justify-between pb-2">
-        <TextInput
-          onSubmit={handleSearch}
-          placeholder="Search Title..."
-          className="w-96"
-        />
+        <form onSubmit={handleSearch}>
+          <TextInput
+            placeholder="Search Title..."
+            className="w-96"
+            name="searchString"
+            id="searchString"
+          />
+        </form>
         {dropDownHandler(
           "Languages",
           languageList,
@@ -232,14 +244,14 @@ const FilterTable = () => {
             <Table.HeadCell>Info</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {ctx.filteredData.length == 0 && (
+            {displayData.length == 0 && (
               <Table.Row>
                 <Table.Cell colSpan={7} className="text-center">
                   No Data
                 </Table.Cell>
               </Table.Row>
             )}
-            {ctx.filteredData
+            {displayData
               .slice((currentPage - 1) * pageSize, currentPage * pageSize)
               .map((element) => {
                 return (
@@ -316,14 +328,14 @@ const FilterTable = () => {
         </span>
         to
         <span className="mx-1 font-bold">
-          {Math.min(currentPage * pageSize, ctx.filteredData.length)}
+          {Math.min(currentPage * pageSize, displayData.length)}
         </span>
         of
-        <span className="mx-1 font-bold">{ctx.filteredData.length}</span>
+        <span className="mx-1 font-bold">{displayData.length}</span>
         entries
         <Pagination
           currentPage={currentPage}
-          totalPages={Math.ceil(ctx.filteredData.length / pageSize)}
+          totalPages={Math.ceil(displayData.length / pageSize)}
           onPageChange={onPageChange}
           className="ml-auto mr-0"
         />

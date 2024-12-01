@@ -57,6 +57,9 @@ function App() {
           removeSelectedData(item) {
             setSelectedData((prev) => prev.filter((f) => f.id != item.id));
           },
+          setSelectedData(data) {
+            setSelectedData(data);
+          },
           setFilteredData: setFilteredData,
           setPlotData: setPlotData,
           setFilterTimeMin: (val: number) =>

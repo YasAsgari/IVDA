@@ -19,6 +19,7 @@ export type BooksContextType = {
 	setFilteredData: React.Dispatch<React.SetStateAction<BookRecord[]>>;
 	setFilterTimeMin: (val: number) => void;
 	setFilterTimeMax: (val: number) => void;
+	setSelectedData:  React.Dispatch<React.SetStateAction<BookRecord[]>>;
 };
 
 export const BooksContext = createContext<BooksContextType>({
@@ -38,4 +39,5 @@ export const BooksContext = createContext<BooksContextType>({
 	setFilteredData: () => {},
 	setFilterTimeMin: () => {},
 	setFilterTimeMax: () => {},
+	setSelectedData: ()=>{}
 });
