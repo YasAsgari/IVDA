@@ -4,6 +4,7 @@ import {
   Checkbox,
   Dropdown,
   Modal,
+  Pagination,
   Table,
   TextInput,
   ToggleSwitch,
@@ -21,6 +22,7 @@ import Information from "./Information";
 
 const FilterTable = () => {
   const ctx = useContext(BooksContext);
+  const pageSize = 250;
 
   const [showSelected, setShowSelected] = React.useState(false);
 
@@ -59,6 +61,9 @@ const FilterTable = () => {
     React.useState(resourceList);
   const [openModal, setOpenModal] = useState(false);
   const [modalInfo, setModalInfo] = useState<BookRecord | undefined>(undefined);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onPageChange = (page: number) => setCurrentPage(page);
 
   const applyFilter = () => {
     const filteredData = ctx.allData.filter((e) => {
@@ -107,6 +112,7 @@ const FilterTable = () => {
 
   useEffect(() => {
     applyFilter();
+    setCurrentPage(1);
   }, [
     selectedLanguages,
     selectedSubjects,
@@ -196,7 +202,7 @@ const FilterTable = () => {
           setSelectedResources
         )}
       </div>
-      <div className="h-[calc(100%-6.5rem)] overflow-x-auto rounded-lg border border-gray-300">
+      <div className="h-[calc(100%-9.5rem)] overflow-x-hidden rounded-lg border border-gray-300">
         <Table hoverable>
           <Table.Head>
             <Table.HeadCell className="p-4"></Table.HeadCell>
@@ -233,71 +239,94 @@ const FilterTable = () => {
                 </Table.Cell>
               </Table.Row>
             )}
-            {ctx.filteredData.map((element) => {
-              return (
-                <Table.Row
-                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                  key={element.id}
-                >
-                  <Table.Cell className="p-4">
-                    <Checkbox
-                      color="#007bff"
-                      onChange={() => {
-                        const currentIndex = ctx.selectedData.indexOf(element);
+            {ctx.filteredData
+              .slice((currentPage - 1) * pageSize, currentPage * pageSize)
+              .map((element) => {
+                return (
+                  <Table.Row
+                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                    key={element.id}
+                  >
+                    <Table.Cell className="p-4">
+                      <Checkbox
+                        color="#007bff"
+                        onChange={() => {
+                          const currentIndex =
+                            ctx.selectedData.indexOf(element);
 
-                        if (currentIndex == -1) {
-                          ctx.addSelectedData(element);
-                        } else {
-                          ctx.removeSelectedData(element);
-                        }
-                      }}
-                      checked={ctx.selectedData.includes(element)}
-                    />
-                  </Table.Cell>
-                  <Table.Cell className="px-0">{element.swiss_id}</Table.Cell>
-                  <Table.Cell>{element.title}</Table.Cell>
-                  <Table.Cell>
-                    {element.series === "" ? "-" : element.series}
-                  </Table.Cell>
-                  <Table.Cell className="px-0">
-                    {element.languages.map((r, i) => (
-                      <Badge
-                        className="m-1 w-fit"
-                        color="blue"
-                        size="xs"
-                        key={i}
-                      >
-                        {r}
-                      </Badge>
-                    ))}
-                  </Table.Cell>
-                  <Table.Cell className="p-1">
-                    <div className="flex flex-row flex-wrap place-items-center gap-2">
-                      {element.resource_types.map((r, i) => (
-                        <Badge color="blue" size="xs" key={i}>
+                          if (currentIndex == -1) {
+                            ctx.addSelectedData(element);
+                          } else {
+                            ctx.removeSelectedData(element);
+                          }
+                        }}
+                        checked={ctx.selectedData.includes(element)}
+                      />
+                    </Table.Cell>
+                    <Table.Cell className="px-0">{element.swiss_id}</Table.Cell>
+                    <Table.Cell>{element.title}</Table.Cell>
+                    <Table.Cell>
+                      {element.series === "" ? "-" : element.series}
+                    </Table.Cell>
+                    <Table.Cell className="px-0">
+                      {element.languages.map((r, i) => (
+                        <Badge
+                          className="m-1 w-fit"
+                          color="blue"
+                          size="xs"
+                          key={i}
+                        >
                           {r}
                         </Badge>
                       ))}
-                    </div>
-                  </Table.Cell>
-                  <Table.Cell>{element.publication.year}</Table.Cell>
-                  <Table.Cell>
-                    <Button
-                      color={"blue"}
-                      className="size-8 rounded-lg bg-[#007bff] p-0"
-                      onClick={() => {
-                        setOpenModal(true);
-                        setModalInfo(element);
-                      }}
-                    >
-                      i
-                    </Button>
-                  </Table.Cell>
-                </Table.Row>
-              );
-            })}
+                    </Table.Cell>
+                    <Table.Cell className="p-1">
+                      <div className="flex flex-row flex-wrap place-items-center gap-2">
+                        {element.resource_types.map((r, i) => (
+                          <Badge color="blue" size="xs" key={i}>
+                            {r}
+                          </Badge>
+                        ))}
+                      </div>
+                    </Table.Cell>
+                    <Table.Cell>{element.publication.year}</Table.Cell>
+                    <Table.Cell>
+                      <Button
+                        color={"blue"}
+                        className="size-8 rounded-lg bg-[#007bff] p-0"
+                        onClick={() => {
+                          setOpenModal(true);
+                          setModalInfo(element);
+                        }}
+                      >
+                        i
+                      </Button>
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
           </Table.Body>
         </Table>
+      </div>
+
+      <div className="flex w-full items-center">
+        Showing
+        <span className="mx-1 font-bold">
+          {(currentPage - 1) * pageSize + 1}
+        </span>
+        to
+        <span className="mx-1 font-bold">
+          {Math.min(currentPage * pageSize, ctx.filteredData.length)}
+        </span>
+        of
+        <span className="mx-1 font-bold">{ctx.filteredData.length}</span>
+        entries
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(ctx.filteredData.length / pageSize)}
+          onPageChange={onPageChange}
+          className="ml-auto mr-0"
+        />
       </div>
 
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
