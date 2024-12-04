@@ -1,0 +1,46 @@
+# language_mapping = {
+#     "Deutsch": "German",
+#     "Englisch": "English",
+#     "Französisch": "French",
+#     "Italienisch": "Italian",
+#     "Russisch": "Russian",
+#     "Latein": "Latin",
+#     "Other": "Other"
+# }
+
+
+# subject_mapping = {
+#     "Autograf": "Autograph",
+#     "Other": "Other",
+#     "Briefsammlung": "Collection of Letters",
+#     "Fotografie": "Photograph",
+#     "Musikhandschrift": "Music Manuscript",
+#     "Rede": "Speech",
+#     "Handschrift": "Manuscript"
+# }
+
+
+# resource_mapping = {
+#     "Archivmaterial / Serie": "Archive Material / Series",
+#     "Buchhandschrift": "Book Manuscript",
+#     "Archivmaterial / Dossier": "Archive Material / Dossier",
+#     "Other": "Other",
+#     "Archivmaterial / Archivdokument": "Archive Material / Archive Document",
+#     "Autograph": "Autograph",
+#     "Musikhandschrift": "Music Manuscript",
+#     "Brief": "Letter",
+#     "Handschrift": "Manuscript"
+# }
+
+
+Library=
+# 'Basel' 
+# 'St. Gallen' 
+# 'Trogen' 
+# 'Autographensammlung Geigy-Hagenbach'
+# 'Solothurn' '
+# 'Bern' 
+# 'Zofingen' 
+# 'Luzern' 
+# 'Aarau' 
+# 'Bernoulli-Briefinventar'

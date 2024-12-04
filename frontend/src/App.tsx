@@ -6,7 +6,7 @@ import TSNEPlot from "./components/TSNEPlot";
 import Visualisations from "./components/Visualisations";
 import BookRecord from "./models/BookRecord";
 import { BooksContext } from "./utils/BooksContext";
-import { sample_data } from "./utils/sample_data_new_title";
+import { sample_data } from "./utils/sample_data_1";
 
 function App() {
   // Fetch the data from the API and store here
