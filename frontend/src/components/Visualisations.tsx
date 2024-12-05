@@ -4,30 +4,18 @@ import Plot from "react-plotly.js";
 import { BooksContext } from "../utils/BooksContext";
 import BarChart from "./BarChart";
 import Container from "./Container";
+import {
+  subject_mapping,
+  language_mapping,
+  resource_mapping,
+} from "../utils/constants";
 
 const Visualisations = () => {
   const ctx = useContext(BooksContext);
 
-  const subjectList: string[] = [
-    "Autograf",
-    "Handschrift",
-    "Briefsammlung",
-    "Briefsammlun",
-  ];
-  const languageList: string[] = [
-    "Deutsch",
-    "Französisch",
-    "Italienisch",
-    "Englisch",
-    "Other",
-  ];
-  const resourceList: string[] = [
-    "Brief",
-    "Autograph",
-    "Archivmaterial / Archivdokument",
-    "Buchhandschrift",
-    "Archivmaterial / Dossier",
-  ];
+  const subjectList: string[] = Object.keys(subject_mapping);
+  const languageList: string[] = Object.keys(language_mapping);
+  const resourceList: string[] = Object.keys(resource_mapping);
 
   const [countriesList, setCountriesList] = useState<string[]>([]);
 
@@ -38,8 +26,8 @@ const Visualisations = () => {
 
   useEffect(() => {
     const uniqueCountryCodes: string[] = [
-      // ...new Set(ctx.plotData.map((f) => f.publication.iso)),
-    ]; // This is also constant
+      ...new Set(ctx.plotData.map((f) => f.publication.iso)),
+    ];
 
     setSubjectFormDist(
       subjectList.map(
@@ -74,17 +62,17 @@ const Visualisations = () => {
     <>
       <Section
         title="Subject Form Distribution"
-        xLabels={subjectList}
+        xLabels={Object.keys(subject_mapping).map((e) => subject_mapping[e])}
         yValues={subjectFormDist}
       />
       <Section
         title="Language Distribution"
-        xLabels={languageList}
+        xLabels={Object.keys(language_mapping).map((e) => language_mapping[e])}
         yValues={languageDist}
       />
       <Section
         title="Resource Type Distribution"
-        xLabels={resourceList}
+        xLabels={Object.keys(resource_mapping).map((e) => resource_mapping[e])}
         yValues={resourceTypeDist}
       />
       <Container>
@@ -95,15 +83,15 @@ const Visualisations = () => {
           data={[
             {
               type: "choropleth",
-              locations: ["FRA", "DEU", "RUS", "ESP", "AUT", "BEL"], //countriesList,
-              z: [20, 30, 15, 10, 6], //countryDist.map((e) => Math.ceil(e / 50)),
+              locations: countriesList,
+              z: countryDist.map((e) => Math.ceil(e / 50)),
               colorscale: [
-                [0, "rgb(255, 255, 255)"],
-                [0.35, "rgb(106, 137, 247)"],
-                [0.5, "rgb(90, 120, 245)"],
-                [0.6, "rgb(70, 100, 245)"],
-                [0.7, "rgb(40, 60, 190)"],
-                [1, "rgb(5, 10, 172)"],
+                [0, "rgb(48, 148, 255)"],
+                [0.2, "rgb(25, 136, 255)"],
+                [0.4, "rgb(0, 123, 255)"],
+                [0.6, "rgb(2, 111, 227)"],
+                [0.8, "rgb(0, 88, 181)"],
+                [1, "rgb(1, 61, 125)"],
               ],
               name: "europe data",
             },
