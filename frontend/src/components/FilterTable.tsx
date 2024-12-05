@@ -20,6 +20,12 @@ import BookRecord from "../models/BookRecord";
 import { BooksContext } from "../utils/BooksContext";
 import Information from "./Information";
 import Fuse from "fuse.js";
+import {
+  language_mapping,
+  subject_mapping,
+  resource_mapping,
+  Library,
+} from "../utils/constants";
 
 const FilterTable = () => {
   const ctx = useContext(BooksContext);
@@ -36,39 +42,22 @@ const FilterTable = () => {
     keys: ["title", "series"],
   });
 
-  // Constants from filtered Data
-  // TODO
-  const languageList: string[] = [
-    "Deutsch",
-    "Französisch",
-    "Italienisch",
-    "Englisch",
-    "Other",
-  ];
-  // TODO
-  const subjectList: string[] = [
-    "Autograf",
-    "Handschrift",
-    "Briefsammlung",
-    "Briefsammlun",
-  ];
-  // TODO
-  const libraryList: string[] = ["Basel", "Solothurn"];
-  // TODO
-  const resourceList: string[] = [
-    "Brief",
-    "Autograph",
-    "Archivmaterial / Archivdokument",
-    "Buchhandschrift",
-    "Archivmaterial / Dossier",
-  ];
+  const libraryList: string[] = Library;
+  const languageList: string[] = Object.keys(language_mapping);
+  const subjectList: string[] = Object.keys(subject_mapping);
+  const resourceList: string[] = Object.keys(resource_mapping);
 
-  const [selectedLanguages, setSelectedLanguages] =
-    React.useState(languageList);
-  const [selectedSubjects, setSelectedSubjects] = React.useState(subjectList);
   const [selectedLibraries, setSelectedLibraries] = React.useState(libraryList);
-  const [selectedResources, setSelectedResources] =
-    React.useState(resourceList);
+  const [selectedLanguages, setSelectedLanguages] = React.useState(
+    Object.keys(language_mapping)
+  );
+  const [selectedSubjects, setSelectedSubjects] = React.useState(
+    Object.keys(subject_mapping)
+  );
+  const [selectedResources, setSelectedResources] = React.useState(
+    Object.keys(resource_mapping)
+  );
+
   const [openModal, setOpenModal] = useState(false);
   const [modalInfo, setModalInfo] = useState<BookRecord | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
@@ -83,42 +72,25 @@ const FilterTable = () => {
       )
         return false;
 
-      // TODO: Uncomment
-      // !
-      // ! Because the selectedLibraries is incorrect, the filter does not work correctly
-      // !
-      // if (!e.languages.some((item) => selectedLanguages.includes(item)))
-      // 	return false;
+      if (!e.languages.some((item) => selectedLanguages.includes(item)))
+        return false;
 
-      // if (
-      // 	!e.subject_forms.some((item) => selectedSubjects.includes(item))
-      // )
-      // 	return false;
+      if (!e.subject_forms.some((item) => selectedSubjects.includes(item)))
+        return false;
 
-      // if (
-      // 	!e.resource_types.some((item) =>
-      // 		selectedResources.includes(item)
-      // 	)
-      // )
-      // 	return false;
+      if (!e.resource_types.some((item) => selectedResources.includes(item)))
+        return false;
 
-      // if (!selectedLibraries.includes(e.publication.city)) return false;
+      // if (!selectedLibraries.includes(e.publication.city)) {
+      //   console.log(e.publication.city);
+      //   return false;
+      // }
 
       return ctx.selectedData.includes(e) || !showSelected;
     });
 
     ctx.setFilteredData(filteredData);
   };
-
-  // Initial setup
-  // useEffect(() => {
-  // 	console.log(
-  // 		ctx.allData
-  // 			.map((e) => e.languages)
-  // 			.flat(1)
-  // 			.filter((value, index, array) => array.indexOf(value) === index)
-  // 	);
-  // }, [ctx.allData]);
 
   useEffect(() => {
     applyFilter();
@@ -143,7 +115,8 @@ const FilterTable = () => {
     label: string,
     mapList: string[],
     selectedArray: string[],
-    setSelectedArray: Dispatch<SetStateAction<string[]>>
+    setSelectedArray: Dispatch<SetStateAction<string[]>>,
+    mapping?: { [key: string]: string }
   ) => {
     return (
       <Dropdown color={"black"} label={label} dismissOnClick={false}>
@@ -161,7 +134,7 @@ const FilterTable = () => {
                   else setSelectedArray([...selectedArray, element]);
                 }}
               />
-              &nbsp; {element}
+              &nbsp; {mapping ? mapping[element] : element}
             </Dropdown.Item>
           );
         })}
@@ -193,13 +166,15 @@ const FilterTable = () => {
           "Languages",
           languageList,
           selectedLanguages,
-          setSelectedLanguages
+          setSelectedLanguages,
+          language_mapping
         )}
         {dropDownHandler(
           "Subject Form",
           subjectList,
           selectedSubjects,
-          setSelectedSubjects
+          setSelectedSubjects,
+          subject_mapping
         )}
         {dropDownHandler(
           "Library",
@@ -211,7 +186,8 @@ const FilterTable = () => {
           "Resource Type",
           resourceList,
           selectedResources,
-          setSelectedResources
+          setSelectedResources,
+          resource_mapping
         )}
       </div>
       <div className="h-[calc(100%-9.5rem)] overflow-x-hidden rounded-lg border border-gray-300">
