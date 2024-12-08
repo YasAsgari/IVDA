@@ -90,7 +90,7 @@ const Visualisations = () => {
             {
               type: "choropleth",
               locations: countriesList,
-              z: countryDist,
+              z: countryDist.map((e)=>Math.log(e)),
               colorscale: [
                 [0, "rgb(48, 148, 255)"],
                 [0.2, "rgb(25, 136, 255)"],
