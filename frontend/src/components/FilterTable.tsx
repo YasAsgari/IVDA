@@ -81,10 +81,12 @@ const FilterTable = () => {
       if (!e.resource_types.some((item) => selectedResources.includes(item)))
         return false;
 
-      // if (!selectedLibraries.includes(e.publication.city)) {
-      //   console.log(e.publication.city);
-      //   return false;
-      // }
+      if (
+        !selectedLibraries.some((library) =>
+          e.current_library.address.includes(library)
+        )
+      )
+        return false;
 
       return ctx.selectedData.includes(e) || !showSelected;
     });
