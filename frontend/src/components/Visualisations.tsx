@@ -9,6 +9,7 @@ import {
   language_mapping,
   resource_mapping,
 } from "../utils/constants";
+import Information from "./Information";
 
 const Visualisations = () => {
   const ctx = useContext(BooksContext);
@@ -76,7 +77,12 @@ const Visualisations = () => {
         yValues={resourceTypeDist}
       />
       <Container>
-        <h2 className="pb-2 text-lg font-semibold">Place Standardized</h2>
+        <div className="flex flex-row">
+          <h2 className="pb-2 text-lg font-semibold mr-4">
+            Place Standardized
+          </h2>
+          <Information description="This is the place where the artifact is found" />
+        </div>
         <Plot
           className="h-[calc(100%-2rem)] w-full"
           config={{ displayModeBar: false }}

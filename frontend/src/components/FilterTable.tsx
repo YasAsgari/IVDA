@@ -110,7 +110,11 @@ const FilterTable = () => {
 
   const handleSearch = (e: any) => {
     e.preventDefault();
-    setDisplayData(fuse.search(e.target.searchString.value).map((e) => e.item));
+    if (e.target.searchString.value)
+      setDisplayData(
+        fuse.search(e.target.searchString.value).map((e) => e.item)
+      );
+    else setDisplayData(ctx.filteredData);
   };
 
   const dropDownHandler = (
@@ -147,7 +151,10 @@ const FilterTable = () => {
   return (
     <>
       <div className="flex flex-row justify-between">
-        <h1 className="pb-4 text-4xl font-bold">FacetForge</h1>
+        <div className="pb-1 -pt-1">
+          <h1 className="pb-1 text-4xl font-bold">FacetForge</h1>
+          <span>Faceted Search and Exploration of Historical Documents</span>
+        </div>
         <ToggleSwitch
           color="blue"
           checked={showSelected}
@@ -204,8 +211,8 @@ const FilterTable = () => {
               Title <Information description="The title of the book." />
             </Table.HeadCell>
             <Table.HeadCell>
-              Series{" "}
-              <Information description="Name of the series the book belongs to." />
+              Issue Date{" "}
+              <Information description="The date that the book was found." />
             </Table.HeadCell>
             <Table.HeadCell>
               Languages{" "}
@@ -216,8 +223,8 @@ const FilterTable = () => {
               <Information description="The type of the resource" />
             </Table.HeadCell>
             <Table.HeadCell>
-              Issue Date{" "}
-              <Information description="The date that the book was found." />
+              Series{" "}
+              <Information description="Name of the series the book belongs to." />
             </Table.HeadCell>
             <Table.HeadCell>Info</Table.HeadCell>
           </Table.Head>
@@ -255,9 +262,7 @@ const FilterTable = () => {
                     </Table.Cell>
                     <Table.Cell className="px-0">{element.swiss_id}</Table.Cell>
                     <Table.Cell>{element.title}</Table.Cell>
-                    <Table.Cell>
-                      {element.series === "" ? "-" : element.series}
-                    </Table.Cell>
+                    <Table.Cell>{element.publication.year}</Table.Cell>
                     <Table.Cell className="px-0">
                       {element.languages.map((r, i) => (
                         <Badge
@@ -279,7 +284,9 @@ const FilterTable = () => {
                         ))}
                       </div>
                     </Table.Cell>
-                    <Table.Cell>{element.publication.year}</Table.Cell>
+                    <Table.Cell>
+                      {element.series === "" ? "-" : element.series}
+                    </Table.Cell>
                     <Table.Cell>
                       <Button
                         color={"blue"}

@@ -93,8 +93,8 @@ const TSNEPlot = () => {
               visible: false,
             },
             showlegend: false,
-            plot_bgcolor: "#e1effe",
-            paper_bgcolor: "#e1effe",
+            plot_bgcolor: "#ffffff",
+            paper_bgcolor: "#ffffff",
           }}
           onSelected={(e) => {
             const newSelectedData: BookRecord[] = [];
