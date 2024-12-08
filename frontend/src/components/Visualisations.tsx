@@ -84,7 +84,7 @@ const Visualisations = () => {
             {
               type: "choropleth",
               locations: countriesList,
-              z: countryDist.map((e) => Math.ceil(e / 50)),
+              z: countryDist,
               colorscale: [
                 [0, "rgb(48, 148, 255)"],
                 [0.2, "rgb(25, 136, 255)"],
