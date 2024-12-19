@@ -9,6 +9,7 @@ import {
   language_mapping,
   resource_mapping,
 } from "../utils/constants";
+import Information from "./Information";
 
 const Visualisations = () => {
   const ctx = useContext(BooksContext);
@@ -76,7 +77,12 @@ const Visualisations = () => {
         yValues={resourceTypeDist}
       />
       <Container>
-        <h2 className="pb-2 text-lg font-semibold">Place Standardized</h2>
+        <div className="flex flex-row">
+          <h2 className="pb-2 text-lg font-semibold mr-4">
+            Place Standardized
+          </h2>
+          <Information description="This is the place where the artifact is found" />
+        </div>
         <Plot
           className="h-[calc(100%-2rem)] w-full"
           config={{ displayModeBar: false }}
@@ -86,8 +92,8 @@ const Visualisations = () => {
               locations: countriesList,
               z: countryDist,
               colorscale: [
-                [0, "rgb(48, 148, 255)"],
-                [0.2, "rgb(25, 136, 255)"],
+                [0, "rgb(208, 227, 255)"],
+                [0.2, "rgb(0, 180, 255)"],
                 [0.4, "rgb(0, 123, 255)"],
                 [0.6, "rgb(2, 111, 227)"],
                 [0.8, "rgb(0, 88, 181)"],
